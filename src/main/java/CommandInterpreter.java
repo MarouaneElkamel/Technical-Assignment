@@ -17,6 +17,7 @@ public class CommandInterpreter {
         validCommand.add("temperature");
         validCommand.add("total");
         validCommand.add("average");
+        validCommand.add("list");
     }
 
 
@@ -30,7 +31,6 @@ public class CommandInterpreter {
         if(words.length>=1) this.firstArgument = words[0];
         else error=1;
         if(words.length>=2) this.secondArgument = words[1];
-        else error=1;
         if(words.length>=3) this.thirdArgument = words[2];
         else thirdArgument = "";
 
@@ -49,7 +49,9 @@ public class CommandInterpreter {
     }
 
     private boolean IsValid()
+
     {
+        if (firstArgument.equals("list") ) return true;
         //check command in command dictionary
         if (!validCommand.contains(firstArgument))
         {
@@ -138,6 +140,8 @@ public class CommandInterpreter {
             case "average":
                 m = Factory.getInstance().getMachine(secondArgument);
                 result= String.valueOf(m.getAverage());
+            case "list":
+                Factory.getInstance().listMachines();
         }
 
         return result;

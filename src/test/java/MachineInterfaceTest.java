@@ -34,9 +34,9 @@ public class MachineInterfaceTest {
 
     @Test
     public void getAverage() {
-        testMachine.addUnit(12);
-        testMachine.addUnit(40);
-        assertEquals(26,(int)testMachine.getAverage());
+        testMachine.addUnit(0);
+        testMachine.addUnit(0);
+        assertEquals(0,(int)testMachine.getAverage());
     }
 
     @Test

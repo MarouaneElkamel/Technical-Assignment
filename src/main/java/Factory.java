@@ -38,6 +38,14 @@ public class Factory {
         return false;
     }
 
+    public void listMachines()
+    {
+        for (Machine m : Machines)
+        {
+            System.out.println("machine name : "+m.getName()+" machine id : "+m.getId());
+        }
+    }
+
     public Machine getMachine(String Id)
     {
         for (Machine m : Machines)
