@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class CommandinterpreterTest {
+public class CommandInterpreterTest {
     CommandInterpreter testCM;
     @Before
     public void setUp() throws Exception {
