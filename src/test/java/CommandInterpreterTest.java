@@ -1,10 +1,12 @@
+import command.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class CommandInterpreterTest {
+public class CommandinterpreterTest {
     CommandInterpreter testCM;
     @Before
     public void setUp() throws Exception {
@@ -20,15 +22,15 @@ public class CommandInterpreterTest {
     @Test
     public void createTest()
     {
-        testCM.Interpret("create TestMachine1 TestCreateID1");
+        testCM.interpret("create TestMachine1 TestCreateID1");
         assertNotNull(Factory.getInstance().getMachine("TestCreateID1"));
     }
 
     @Test
     public void addTest()
-    {    testCM.Interpret("create TestMachine2 TestCreateID2");
+    {    testCM.interpret("create TestMachine2 TestCreateID2");
         int initial = Factory.getInstance().getMachine("TestCreateID2").getTotalUnitsNumber();
-        testCM.Interpret("add TestCreateID2 20");
+        testCM.interpret("add TestCreateID2 20");
         int after = Factory.getInstance().getMachine("TestCreateID2").getTotalUnitsNumber();
         assertEquals(20,after-initial);
     }
@@ -36,9 +38,9 @@ public class CommandInterpreterTest {
     @Test
     public void temperatureSetTest()
     {
-        testCM.Interpret("create TestMachine3 TestCreateID3");
+        testCM.interpret("create TestMachine3 TestCreateID3");
         int initial = Factory.getInstance().getMachine("TestCreateID3").getTemperature();
-        testCM.Interpret("temperature TestCreateID3 20");
+        testCM.interpret("temperature TestCreateID3 20");
         int after = Factory.getInstance().getMachine("TestCreateID3").getTemperature();
         assertEquals(20,after-initial);
     }
@@ -46,35 +48,35 @@ public class CommandInterpreterTest {
     @Test
     public void temperatureShowTest()
     {
-        testCM.Interpret("create TestMachine4 TestCreateID4");
+        testCM.interpret("create TestMachine4 TestCreateID4");
         int initial = Factory.getInstance().getMachine("TestCreateID4").getTemperature();
 
-        int after = Integer.parseInt(testCM.Interpret("temperature TestCreateID4"));;
+        int after = Integer.parseInt(testCM.interpret("temperature TestCreateID4"));;
         assertEquals(initial,after);
     }
 
     @Test
     public void totalTest()
     {
-        testCM.Interpret("create TestMachine5 TestCreateID5");
+        testCM.interpret("create TestMachine5 TestCreateID5");
         int initial = Factory.getInstance().getMachine("TestCreateID5").getTotalUnitsNumber();
 
-        int after = Integer.parseInt(testCM.Interpret("total TestCreateID5"));;
+        int after = Integer.parseInt(testCM.interpret("total TestCreateID5"));;
         assertEquals(initial,after);
     }
     @Test
     public void averageTest()
     {
-        testCM.Interpret("create TestMachine6 TestCreateID6");
+        testCM.interpret("create TestMachine6 TestCreateID6");
         double initial = Factory.getInstance().getMachine("TestCreateID6").getAverage();
 
-        double after = Double.parseDouble(testCM.Interpret("average TestCreateID6"));;
+        double after = Double.parseDouble(testCM.interpret("average TestCreateID6"));;
         assertEquals((int)initial,(int)after);
     }
     @Test
     public void zeroArgTest()
     {
-        String result = testCM.Interpret("");
+        String result = testCM.interpret("");
         assertEquals("Error",result);
     }
 
@@ -82,14 +84,14 @@ public class CommandInterpreterTest {
     @Test
     public void oneArgTest()
     {
-        String result = testCM.Interpret("create");
+        String result = testCM.interpret("create");
         assertEquals("Error",result);
     }
 
     @Test
     public void twoArgTest()
     {
-        String result = testCM.Interpret("create Machine");
+        String result = testCM.interpret("create Machine");
         assertEquals("Error",result);
     }
 
@@ -98,7 +100,7 @@ public class CommandInterpreterTest {
     {
         String result;
         Factory.getInstance().createMachine("TestMachine","TestCreateIDx");
-        result = testCM.Interpret("create TestMachine TestCreateIDx");
+        result = testCM.interpret("create TestMachine TestCreateIDx");
         assertEquals("Error",result);
     }
 
@@ -106,15 +108,15 @@ public class CommandInterpreterTest {
     public void addWithoutThirdArgumentTest()
     {
         String result;
-        result = testCM.Interpret("create TestMachine8 TestCreateID8");
-        result = testCM.Interpret("add TestCreateID8");
+        result = testCM.interpret("create TestMachine8 TestCreateID8");
+        result = testCM.interpret("add TestCreateID8");
         assertEquals("Error",result);
     }
     @Test
     public void createWithoutThirdArgumentTest()
     {
         String result;
-        result = testCM.Interpret("create TestMachine8");
+        result = testCM.interpret("create TestMachine8");
         assertEquals("Error",result);
     }
 
@@ -122,8 +124,8 @@ public class CommandInterpreterTest {
     public void totalWithThirdArgumentTest()
     {
         String result;
-        testCM.Interpret("create TestMachine9 TestMachine9");
-        result = testCM.Interpret("total TestMachine9 20");
+        testCM.interpret("create TestMachine9 TestMachine9");
+        result = testCM.interpret("total TestMachine9 20");
         assertEquals("Error",result);
     }
 
@@ -132,7 +134,7 @@ public class CommandInterpreterTest {
     {
         String result;
         Factory.getInstance().createMachine("TestMachine10", "TestMachine10");
-        result = testCM.Interpret("average TestMachine10 20");
+        result = testCM.interpret("average TestMachine10 20");
         assertEquals("Error",result);
     }
 
@@ -140,8 +142,8 @@ public class CommandInterpreterTest {
     public void thirdArgumentNotInt()
     {
         String result;
-        result = testCM.Interpret("create TestMachine11 TestCreateID11");
-        result = testCM.Interpret("add TestCreateID11 T");
+        result = testCM.interpret("create TestMachine11 TestCreateID11");
+        result = testCM.interpret("add TestCreateID11 T");
         assertEquals("Error",result);
     }
 
@@ -149,7 +151,7 @@ public class CommandInterpreterTest {
     public void machineIdNotFoundTest()
     {
         String result;
-        result = testCM.Interpret("add TestMachineZ 2");
+        result = testCM.interpret("add TestMachineZ 2");
         assertEquals("Error",result);
     }
 

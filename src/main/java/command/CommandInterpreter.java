@@ -1,30 +1,38 @@
+package command;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CommandInterpreter {
 
-    String firstArgument,secondArgument,thirdArgument;
+    String firstArgument;
+    String secondArgument;
+    String thirdArgument;
     int error;
+    final static String CREATE_COMMAND = "create";
+    final static String ADD_COMMAND = "add";
+    final static String TEMPERATURE_COMMAND = "temperature";
+    final static String TOTAL_COMMAND = "total";
+    final static String AVERAGE_COMMAND = "average";
+    final static String LIST_COMMAND = "list";
     ArrayList<String> validCommand ;
 
     //public constructor
     public CommandInterpreter() {
         //add the list of all valid command
         validCommand = new ArrayList<>();
-        validCommand.add("create");
-        validCommand.add("add");
-        validCommand.add("temperature");
-        validCommand.add("total");
-        validCommand.add("average");
-        validCommand.add("list");
+        validCommand.add(CREATE_COMMAND);
+        validCommand.add(ADD_COMMAND);
+        validCommand.add(TEMPERATURE_COMMAND);
+        validCommand.add(TOTAL_COMMAND);
+        validCommand.add(AVERAGE_COMMAND);
+        validCommand.add(LIST_COMMAND);
     }
 
 
-    public String Interpret(String command) {
+    public String interpret(String command) {
 
 
-        command.trim();
+        command = command.trim();
         error=0;
         //split command into arguments
         String[] words = command.split(" ");
@@ -35,7 +43,7 @@ public class CommandInterpreter {
         else thirdArgument = "";
 
         //check if the command is valid
-        boolean test = IsValid();
+        boolean test = isValid();
         if (!test || error==1)
         {
             System.out.println("Command Error");
@@ -48,10 +56,10 @@ public class CommandInterpreter {
         }
     }
 
-    private boolean IsValid()
+    private boolean isValid()
 
     {
-        if (firstArgument.equals("list") ) return true;
+        if (firstArgument.equals(LIST_COMMAND) ) return true;
         //check command in command dictionary
         if (!validCommand.contains(firstArgument))
         {
@@ -60,7 +68,7 @@ public class CommandInterpreter {
             return false;
         }
         //check Machine exists
-        if (!firstArgument.equals("create") && !Factory.getInstance().machineIdExists(secondArgument))
+        if (!firstArgument.equals(CREATE_COMMAND) && !Factory.getInstance().machineIdExists(secondArgument))
         {
             error=1;
             System.out.println("Machine Id not found");
@@ -68,7 +76,7 @@ public class CommandInterpreter {
         }
 
         //check Machine exists
-        if (firstArgument.equals("create") && Factory.getInstance().machineIdExists(thirdArgument))
+        if (firstArgument.equals(CREATE_COMMAND) && Factory.getInstance().machineIdExists(thirdArgument))
         {
             error=1;
             System.out.println("Machine Id already exists");
@@ -76,20 +84,18 @@ public class CommandInterpreter {
         }
 
         //check that there is a third argument for create and add
-        if (firstArgument.equals("create") ||firstArgument.equals("add") )
+        if ((firstArgument.equals(CREATE_COMMAND) ||firstArgument.equals(ADD_COMMAND)) && thirdArgument.equals("")  )
         {
-            if (thirdArgument.equals("") )
-            {
+
                 System.out.println("Missing third argument");
                 error=1;
                 return false;
-            }
         }
 
 
 
         //check that there is no third argument in average and total
-        if (firstArgument.equals("average") || firstArgument.equals("total")  )
+        if (firstArgument.equals(AVERAGE_COMMAND) || firstArgument.equals(TOTAL_COMMAND)  )
         {
             if (!thirdArgument.equals("") )
             {
@@ -100,7 +106,7 @@ public class CommandInterpreter {
         }
 
         //check if the third argument is an integer in case the command is add or temperature
-        if (firstArgument.equals("add") || (firstArgument.equals("temperature") && !thirdArgument.equals("")))
+        if (firstArgument.equals(ADD_COMMAND) || (firstArgument.equals(TEMPERATURE_COMMAND) && !thirdArgument.equals("")))
         {
             try {
                 Integer.parseInt(thirdArgument);
@@ -121,27 +127,31 @@ public class CommandInterpreter {
         String result="";
         //execute command based on argument
         switch (firstArgument) {
-            case "create":
+            case CREATE_COMMAND:
                 Factory.getInstance().createMachine(secondArgument, thirdArgument);
                 break;
-            case "add":
+            case ADD_COMMAND:
                 m = Factory.getInstance().getMachine(secondArgument);
                 m.addUnit(Integer.parseInt(thirdArgument));
                 break;
-            case "temperature":
+            case TEMPERATURE_COMMAND:
                 m = Factory.getInstance().getMachine(secondArgument);
                 if (thirdArgument.equals("")) result= String.valueOf(m.getTemperature());
                 else m.setTemperature(Integer.parseInt(thirdArgument));
                 break;
-            case "total":
+            case TOTAL_COMMAND:
                 m = Factory.getInstance().getMachine(secondArgument);
                 result= String.valueOf(m.getTotalUnitsNumber());
                 break;
-            case "average":
+            case AVERAGE_COMMAND:
                 m = Factory.getInstance().getMachine(secondArgument);
                 result= String.valueOf(m.getAverage());
-            case "list":
+                break;
+            case LIST_COMMAND:
                 Factory.getInstance().listMachines();
+                break;
+            default:
+                System.out.println("nope");
         }
 
         return result;

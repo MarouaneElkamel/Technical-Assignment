@@ -1,6 +1,7 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import command.*;
 
 import static org.junit.Assert.*;
 

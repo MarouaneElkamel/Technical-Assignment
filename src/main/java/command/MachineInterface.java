@@ -1,4 +1,4 @@
-
+package command;
 
 public interface MachineInterface {
 

@@ -1,4 +1,4 @@
-
+package command;
 
 import java.util.Scanner;
 
@@ -17,7 +17,7 @@ public class Main {
             if(command.equals("q")) break;
             else
             {
-                result = commandInterpreter.Interpret(command);
+                result = commandInterpreter.interpret(command);
                 if (!result.equals("")) System.out.println(result);
             }
         }
